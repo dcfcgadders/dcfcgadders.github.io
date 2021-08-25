@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="lottery generator">
+        <meta name="author" content="Adam Gadsby">
+        <title>Lottery Generator</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">              
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://kit.fontawesome.com/edc833d702.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md-8 mx-auto my-5 text-center">
+					<h1>Lotto Numbers Generator </h1>
+					<h4>by dcfcgadders</h2>
+					<div class="col-10 col-md-6 mx-auto intro mt-4 text-left">
+						<p>This page is a simple Lottery number generator, it works by creating a array of available lotto numbers in the selected game, then truely randomising the array using the Fisher–Yates Shuffle method.</p>
+						<p>Once the order is shuffled, the selected games amount of "lottery numbers" are removed from the array and placed into a new array, which is then sorted into ascending order.</p>
+						<p>If you select a game that Lucky Stars, A Life Ball or Thunderball. Then an array is created with the games range of available numbers and the process above is repeated.</p>
+					</div>
+                    <div class="row">
+                        <div class="col-12 my-4 ">                    
+                            <div class="row">
+								<div class="col-12 col-md-10 mx-auto">
+									<h2>Choose your game</h2>
+								</div>
+								<div class="col-md-10 mx-auto my-4">
+									<div class="row">
+										<div class="col-12 col-md-3 mb-3">
+											<button id="lotto" class="btn btn-danger" onclick="setLottery(59,0,6,0)"><i class="fas fa-hand-peace mr-1"></i> The National Lottery</button>
+										</div>
+										<div class="col-12 col-md-3 mb-3">
+											<button id="euromillions" class="btn btn-primary" onclick="setLottery(50,12,5,2)"><i class="fas fa-hand-peace mr-1"></i> EuroMillions</button>
+										</div>
+										<div class="col-12 col-md-3 mb-3">
+											<button id="setforlife" class="btn btn-info" onclick="setLottery(47,10,5,1)"><i class="fas fa-hand-peace mr-1"></i> Set For Life</button>
+										</div>
+										<div class="col-12 col-md-3 mb-3">
+											<button id="thunderball" class="btn btn-dark" onclick="setLottery(39,14,5,1)"><i class="fas fa-hand-peace mr-1"></i> Thunderball</button>
+										</div>													
+									</div>
+								</div>
+								<div class="col-12 col-md-10 mx-auto mt-5">
+									<div class="row">
+										<div class="col-12 mb-3 text-center mainballs">
+											<h4 class="mainballs_title">Main Lottery Numbers</h4>
+											<h5 class="mainballs_results" id="Lotto"></h5>
+										</div>
+										<div class="col-12 mb-3 text-center bonusballs">
+											<h4 class="bonusballs_title">Bonus Number(s)</h4>
+											<h5 class="bonusballs_results" id="Bonus"></h5>
+										</div>
+									</div>
+								</div>
+							</div>
+                        </div>                        
+                    </div>
+                </div>
+                
+            </div>                        
+        </div>
+        <script type="text/javascript">
+            function shuffle(array) {
+                var currentIndex = array.length, temporaryValue, randomIndex;
+                // While there remain elements to shuffle...
+                while (0 !== currentIndex) {
+                    // Pick a remaining element...
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+                    // And swap it with the current element.
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                }
+                return array;
+            }
+
+            function range(n) {     
+                let a = Array(n);
+                for (let i = 0; i < n; a[i++] = i);
+                return a;
+            }
+
+            function Lottery(){
+                var main = document.getElementById("main_numbers").value, 
+                    extra = document.getElementById("bonus_humbers").value,
+                    mainHowMany = document.getElementById("main_howmany").value,
+                    extraHowMany = document.getElementById("bonus_howmany").value;  
+
+                var mainnumbers = range(main),
+                    extranumbers = range(extra),
+                    setMain = shuffle(mainnumbers),
+                    setExtra = shuffle(extranumbers),
+                    getlotto = setMain.slice(0, mainHowMany),
+                    getbonus = setExtra.slice(0, extraHowMany);
+                
+                document.getElementById("Lotto").innerHTML = getlotto;
+                document.getElementById("Bonus").innerHTML = getbonus;
+            }
+            function setLottery(mn, ex, mnHM, exHM){
+                
+                var mainnumbers = range(mn),
+                    extranumbers = range(ex),
+                    setMain = shuffle(mainnumbers),
+                    setExtra = shuffle(extranumbers),
+                    getlotto = setMain.slice(0, mnHM),
+					getbonus = setExtra.slice(0, exHM);
+
+					sortlotto = getlotto.sort(function(a, b){return a-b});
+					sortbonus = getbonus.sort(function(a, b){return a-b});
+                
+                document.getElementById("Lotto").innerHTML = sortlotto;
+                document.getElementById("Bonus").innerHTML = sortbonus;
+			}
+			
+			$(document).ready(function(){
+				$('.mainballs').hide();
+				$('.bonusballs').hide();
+				$('#lotto').on("click", function(){
+					$('.mainballs').fadeIn('slow');
+					$('.bonusballs').fadeOut('slow');
+					$('.mainballs_title').text('The National Lottery Numbers');
+					$('.bonusballs_title').text('');
+					$('.bonusballs_title, .mainballs_title')
+						.removeClass('text-primary')
+						.removeClass('text-info')
+						.removeClass('text-inverse')
+						.addClass('text-danger');
+				});
+				$('#euromillions').on("click", function(){
+					$('.mainballs').fadeIn('slow');
+					$('.bonusballs').fadeIn('slow');
+					$('.mainballs_title').text('EuroMillions Numbers');
+					$('.bonusballs_title').text('Lucky Stars');
+					$('.bonusballs_title, .mainballs_title')
+						.removeClass('text-danger')
+						.removeClass('text-info')
+						.removeClass('text-inverse')
+						.addClass('text-primary');
+				});
+				$('#setforlife').on("click", function(){
+					$('.mainballs').fadeIn('slow');
+					$('.bonusballs').fadeIn('slow');
+					$('.mainballs_title').text('Set For Life Numbers');
+					$('.bonusballs_title').text('Life Ball');
+					$('.bonusballs_title, .mainballs_title')
+						.removeClass('text-danger')
+						.removeClass('text-primary')
+						.removeClass('text-inverse')
+						.addClass('text-info');
+				});
+				$('#thunderball').on("click", function(){
+					$('.mainballs').fadeIn('slow');
+					$('.bonusballs').fadeIn('slow');
+					$('.mainballs_title').text('Main Numbers');
+					$('.bonusballs_title').text('Thunderball');
+					$('.bonusballs_title, .mainballs_title').
+						removeClass('text-info')
+						.removeClass('text-primary')
+						.removeClass('text-danger')
+						.addClass('text-inverse');
+				});
+			});
+        </script>
+    </body>
+</html>
